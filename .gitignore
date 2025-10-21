@@ -90,6 +90,9 @@ temp/
 output/
 uploads/
 
+# Build output
+dist/
+
 # IDE
 .vscode/
 .idea/
