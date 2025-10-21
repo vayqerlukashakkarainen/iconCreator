@@ -1,23 +1,24 @@
-# Icon Creator - GitHub Pages Demo
+# Icon Creator - Client-Side Static Version
 
-This is a demo version of the Icon Creator application hosted on GitHub Pages.
+This is a fully client-side icon creator that converts images to various app icon formats.
 
-## ⚠️ Limited Functionality
-This GitHub Pages version shows the interface but cannot perform actual image conversion since it's a static site.
-
-## 🚀 Full Version
-For the complete functionality including image conversion:
-
-1. Clone this repository
-2. Run `npm install`
-3. Run `npm start`
-4. Visit http://localhost:3000
-
-## Features (Full Version)
+## Features
+- 100% client-side processing (no server required)
 - Upload images via drag & drop
-- Convert to ICO (Windows), ICNS (macOS), PNG (Linux) formats
+- Convert to PNG, ICO, and ICNS formats
 - Custom dimensions (16-2048px)
 - Download individual files or ZIP bundle
+- Runs entirely in your browser
+
+## How it works
+- Uses HTML5 Canvas for image processing
+- JSZip for creating downloadable ZIP files
+- All processing happens locally in your browser
+- No data is sent to any server
+
+## Supported Formats
+- **Input**: JPG, PNG, GIF, BMP, WebP
+- **Output**: PNG (Linux), ICO (Windows), ICNS (macOS)
 
 ---
-*Generated automatically from the main branch*
+*Generated automatically - fully static version*
