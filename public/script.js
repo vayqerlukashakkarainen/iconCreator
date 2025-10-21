@@ -13,6 +13,83 @@ const heightInput = document.getElementById('height');
 let selectedFile = null;
 let processedImages = {};
 
+// ICO format creation function
+async function createICOFromPNG(pngBlob, width, height) {
+  const pngArrayBuffer = await pngBlob.arrayBuffer();
+  const pngData = new Uint8Array(pngArrayBuffer);
+  
+  // ICO file header (6 bytes)
+  const header = new ArrayBuffer(6);
+  const headerView = new DataView(header);
+  headerView.setUint16(0, 0, true);      // Reserved (must be 0)
+  headerView.setUint16(2, 1, true);      // Image type (1 = ICO)
+  headerView.setUint16(4, 1, true);      // Number of images
+  
+  // ICO directory entry (16 bytes)
+  const dirEntry = new ArrayBuffer(16);
+  const dirView = new DataView(dirEntry);
+  dirView.setUint8(0, width === 256 ? 0 : width);   // Width (0 = 256)
+  dirView.setUint8(1, height === 256 ? 0 : height); // Height (0 = 256)
+  dirView.setUint8(2, 0);                            // Color palette (0 = no palette)
+  dirView.setUint8(3, 0);                            // Reserved
+  dirView.setUint16(4, 1, true);                     // Color planes
+  dirView.setUint16(6, 32, true);                    // Bits per pixel
+  dirView.setUint32(8, pngData.length, true);       // Size of image data
+  dirView.setUint32(12, 22, true);                   // Offset to image data (6 + 16 = 22)
+  
+  // Combine all parts
+  const result = new Uint8Array(22 + pngData.length);
+  result.set(new Uint8Array(header), 0);
+  result.set(new Uint8Array(dirEntry), 6);
+  result.set(pngData, 22);
+  
+  return result.buffer;
+}
+
+// ICNS format creation function
+async function createICNSFromPNG(pngBlob, width, height) {
+  const pngArrayBuffer = await pngBlob.arrayBuffer();
+  const pngData = new Uint8Array(pngArrayBuffer);
+  
+  // Determine ICNS type based on size
+  let icnsType;
+  switch (width) {
+    case 16: icnsType = 'ic04'; break;
+    case 32: icnsType = 'ic05'; break;
+    case 128: icnsType = 'ic07'; break;
+    case 256: icnsType = 'ic08'; break;
+    case 512: icnsType = 'ic09'; break;
+    case 1024: icnsType = 'ic10'; break;
+    default: icnsType = 'ic08'; break; // Default to 256x256
+  }
+  
+  // ICNS header (8 bytes)
+  const headerSize = 8;
+  const iconSize = 8 + pngData.length;
+  const totalSize = headerSize + iconSize;
+  
+  const result = new ArrayBuffer(totalSize);
+  const view = new DataView(result);
+  
+  // File header
+  view.setUint32(0, 0x69636e73); // 'icns' magic
+  view.setUint32(4, totalSize);   // Total file size
+  
+  // Icon entry
+  const typeBytes = new TextEncoder().encode(icnsType);
+  view.setUint8(8, typeBytes[0]);
+  view.setUint8(9, typeBytes[1]);
+  view.setUint8(10, typeBytes[2]);
+  view.setUint8(11, typeBytes[3]);
+  view.setUint32(12, iconSize); // Icon data size including header
+  
+  // PNG data
+  const resultArray = new Uint8Array(result);
+  resultArray.set(pngData, 16);
+  
+  return result;
+}
+
 uploadArea.addEventListener('click', () => imageInput.click());
 
 uploadArea.addEventListener('dragover', (e) => {
@@ -138,12 +215,15 @@ async function processImageClientSide(file, width, height) {
   const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
   processedImages.png = URL.createObjectURL(pngBlob);
   
-  // For ICO, we'll use a simple approach - just convert the PNG
-  // In a real implementation, you'd want to use a proper ICO library
-  processedImages.ico = processedImages.png; // Simplified for now
+  // Convert to ICO format using native implementation
+  const icoBuffer = await createICOFromPNG(pngBlob, width, height);
+  const icoBlob = new Blob([icoBuffer], { type: 'image/x-icon' });
+  processedImages.ico = URL.createObjectURL(icoBlob);
   
-  // For ICNS, we'll also use PNG as a placeholder
-  processedImages.icns = processedImages.png; // Simplified for now
+  // Convert to ICNS format using native implementation
+  const icnsBuffer = await createICNSFromPNG(pngBlob, width, height);
+  const icnsBlob = new Blob([icnsBuffer], { type: 'image/icns' });
+  processedImages.icns = URL.createObjectURL(icnsBlob);
   
   // Create ZIP file with JSZip
   if (typeof JSZip !== 'undefined') {
@@ -151,8 +231,8 @@ async function processImageClientSide(file, width, height) {
     const baseName = file.name.split('.')[0] || 'icon';
     
     zip.file(`${baseName}_${width}x${height}.png`, pngBlob);
-    zip.file(`${baseName}_${width}x${height}.ico`, pngBlob); // Using PNG for now
-    zip.file(`${baseName}_${width}x${height}.icns`, pngBlob); // Using PNG for now
+    zip.file(`${baseName}_${width}x${height}.ico`, icoBlob);
+    zip.file(`${baseName}_${width}x${height}.icns`, icnsBlob);
     
     const zipBlob = await zip.generateAsync({type: 'blob'});
     processedImages.zip = URL.createObjectURL(zipBlob);
