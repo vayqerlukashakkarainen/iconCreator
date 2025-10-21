@@ -1,79 +1,385 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Icon Creator - Convert Images to App Icons</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>🎨 Icon Creator</h1>
-            <p>Convert your images to native app icon formats - 100% client-side processing</p>
-        </header>
+	<head>
+		<script
+			data-goatcounter="https://iorisadog.goatcounter.com/count"
+			async
+			src="//gc.zgo.at/count.js"
+		></script>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Icon Creator - Convert Images to App Icons</title>
+		<link rel="stylesheet" href="styles.css" />
+		<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<h1>
+					<svg
+						width="32"
+						height="32"
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						class="header-icon"
+					>
+						<path
+							d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+						<circle
+							cx="9"
+							cy="9"
+							r="2"
+							stroke="currentColor"
+							stroke-width="2"
+						/>
+						<path
+							d="M21 15L16 10L5 21"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+					Icon Creator
+				</h1>
+				<p>
+					Convert your images to native app icon formats - 100% client-side
+					processing
+				</p>
+			</header>
 
-        <main>
-            <form id="uploadForm" class="upload-form">
-                <div class="upload-area" id="uploadArea">
-                    <div class="upload-content">
-                        <div class="upload-icon">📁</div>
-                        <p>Drag & drop an image here or <span class="browse-text">browse</span></p>
-                        <p class="file-types">Supports: JPG, PNG, GIF, BMP, WebP</p>
-                    </div>
-                    <input type="file" id="imageInput" name="image" accept="image/*" hidden>
-                </div>
+			<main>
+				<form id="uploadForm" class="upload-form">
+					<div class="upload-area" id="uploadArea">
+						<div class="upload-content">
+							<div class="upload-icon">
+								<svg
+									width="48"
+									height="48"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+									<path
+										d="M14 2V8H20"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+									<path
+										d="M12 18V12"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+									<path
+										d="M9 15L12 12L15 15"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+								</svg>
+							</div>
+							<p>
+								Drag & drop an image here or
+								<span class="browse-text">browse</span>
+							</p>
+							<p class="file-types">Supports: JPG, PNG, GIF, BMP, WebP</p>
+						</div>
+						<input
+							type="file"
+							id="imageInput"
+							name="image"
+							accept="image/*"
+							hidden
+						/>
+					</div>
 
-                <div class="options">
-                    <div class="size-controls">
-                        <label for="width">Width:</label>
-                        <input type="number" id="width" name="width" value="512" min="16" max="2048">
-                        
-                        <label for="height">Height:</label>
-                        <input type="number" id="height" name="height" value="512" min="16" max="2048">
-                    </div>
-                    
-                    <button type="submit" id="convertBtn" disabled>Convert to Icons</button>
-                </div>
-            </form>
+					<div class="options">
+						<div class="size-controls">
+							<label for="width">Width:</label>
+							<input
+								type="number"
+								id="width"
+								name="width"
+								value="512"
+								min="16"
+								max="2048"
+							/>
 
-            <div id="preview" class="preview hidden">
-                <h3>Preview</h3>
-                <img id="previewImg" alt="Image preview">
-            </div>
+							<label for="height">Height:</label>
+							<input
+								type="number"
+								id="height"
+								name="height"
+								value="512"
+								min="16"
+								max="2048"
+							/>
+						</div>
 
-            <div id="results" class="results hidden">
-                <h3>✅ Conversion Complete!</h3>
-                <div class="download-links">
-                    <a id="downloadPng" class="download-btn" target="_blank">
-                        <span class="icon">🐧</span>
-                        Download PNG (Linux)
-                    </a>
-                    <a id="downloadIco" class="download-btn" target="_blank">
-                        <span class="icon">🪟</span>
-                        Download ICO (Windows)
-                    </a>
-                    <a id="downloadIcns" class="download-btn" target="_blank">
-                        <span class="icon">🍎</span>
-                        Download ICNS (macOS)
-                    </a>
-                    <a id="downloadAll" class="download-btn download-all" target="_blank">
-                        <span class="icon">📦</span>
-                        Download All (ZIP)
-                    </a>
-                </div>
-            </div>
+						<button type="submit" id="convertBtn" disabled>
+							Convert to Icons
+						</button>
+					</div>
+				</form>
 
-            <div id="loading" class="loading hidden">
-                <div class="spinner"></div>
-                <p>Converting your image...</p>
-            </div>
+				<div id="preview" class="preview hidden">
+					<h3>Preview</h3>
+					<img id="previewImg" alt="Image preview" />
+				</div>
 
-            <div id="error" class="error hidden"></div>
-        </main>
-    </div>
+				<div id="results" class="results hidden">
+					<h3>
+						<svg
+							width="24"
+							height="24"
+							viewBox="0 0 24 24"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+							class="success-icon"
+						>
+							<path
+								d="M9 12L11 14L15 10"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+							<circle
+								cx="12"
+								cy="12"
+								r="10"
+								stroke="currentColor"
+								stroke-width="2"
+							/>
+						</svg>
+						Conversion Complete!
+					</h3>
+					<div class="download-links">
+						<a id="downloadPng" class="download-btn" target="_blank">
+							<svg
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								class="icon"
+							>
+								<path
+									d="M21 15V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V15"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+								<polyline
+									points="7,10 12,15 17,10"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+								<line
+									x1="12"
+									y1="15"
+									x2="12"
+									y2="3"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+								/>
+							</svg>
+							Download PNG
+						</a>
+						<a id="downloadIco" class="download-btn" target="_blank">
+							<svg
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								class="icon"
+							>
+								<path
+									d="M21 15V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V15"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+								<polyline
+									points="7,10 12,15 17,10"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+								<line
+									x1="12"
+									y1="15"
+									x2="12"
+									y2="3"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+								/>
+							</svg>
+							Download ICO (Windows)
+						</a>
+						<a id="downloadIcns" class="download-btn" target="_blank">
+							<svg
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								class="icon"
+							>
+								<path
+									d="M21 15V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V15"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+								<polyline
+									points="7,10 12,15 17,10"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+								<line
+									x1="12"
+									y1="15"
+									x2="12"
+									y2="3"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+								/>
+							</svg>
+							Download ICNS (macOS)
+						</a>
+						<a
+							id="downloadAll"
+							class="download-btn download-all"
+							target="_blank"
+						>
+							<svg
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								class="icon"
+							>
+								<path
+									d="M16 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V6C4 4.89543 4.89543 4 6 4H8"
+									stroke="currentColor"
+									stroke-width="2"
+								/>
+								<rect
+									x="8"
+									y="2"
+									width="8"
+									height="4"
+									rx="1"
+									stroke="currentColor"
+									stroke-width="2"
+								/>
+								<path
+									d="M12 11V17"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+								/>
+								<path
+									d="M9 14L12 17L15 14"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+							</svg>
+							Download All (ZIP)
+						</a>
+					</div>
+				</div>
 
-    <script src="script.js"></script>
-</body>
+				<div id="loading" class="loading hidden">
+					<div class="spinner"></div>
+					<p>Converting your image...</p>
+				</div>
+
+				<div id="error" class="error hidden"></div>
+			</main>
+
+			<footer>
+				<p>
+					Made by
+					<a
+						href="https://luhakk.com"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="footer-link"
+					>
+						<svg
+							width="16"
+							height="16"
+							viewBox="0 0 24 24"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+							class="footer-icon"
+						>
+							<path
+								d="M10 13C10 13.5523 10.4477 14 11 14H13C13.5523 14 14 13.5523 14 13V11C14 10.4477 13.5523 10 13 10H11C10.4477 10 10 10.4477 10 11V13Z"
+								stroke="currentColor"
+								stroke-width="2"
+							/>
+							<path
+								d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+								stroke="currentColor"
+								stroke-width="2"
+							/>
+							<path
+								d="M16 8L8 16"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M8 8H16V16"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+						</svg>
+						Lukas Hakkarainen
+					</a>
+					• View all my projects
+				</p>
+			</footer>
+		</div>
+
+		<script src="script.js"></script>
+	</body>
 </html>
