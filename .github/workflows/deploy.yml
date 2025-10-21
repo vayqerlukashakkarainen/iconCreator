@@ -25,7 +25,7 @@ jobs:
         run: npm run build
 
       - name: Create CNAME
-        run: echo iconify.luhakk.com > ./dist/CNAME
+        run: mkdir -p ./dist && echo "iconify.luhakk.com" > ./dist/CNAME
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
