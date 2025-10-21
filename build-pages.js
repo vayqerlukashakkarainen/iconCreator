@@ -68,6 +68,14 @@ For the complete functionality including image conversion:
   
   await fs.writeFile('dist/README.md', readme);
   
+  // Copy CNAME file if it exists
+  try {
+    await fs.copyFile('CNAME', 'dist/CNAME');
+    console.log('Copied CNAME file');
+  } catch (error) {
+    console.log('No CNAME file found, skipping...');
+  }
+  
   console.log('✅ Static site built successfully in dist/ directory');
 }
 

@@ -24,11 +24,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build project
-        run: npm run build
-
-      - name: Create CNAME
-        run: mkdir -p ./dist && echo "iconify.luhakk.com" > ./dist/CNAME
+      - name: Build project for GitHub Pages
+        run: npm run build:pages
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
