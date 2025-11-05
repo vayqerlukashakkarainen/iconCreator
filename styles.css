@@ -122,6 +122,70 @@ header p {
 
 .options {
   display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mode-selector {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.mode-selector label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border: 2px solid var(--border-secondary);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--bg-tertiary);
+  font-weight: 500;
+}
+
+.mode-selector label:hover {
+  border-color: var(--accent-primary);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.mode-selector input[type="radio"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border-secondary);
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.mode-selector input[type="radio"]:checked {
+  border-color: var(--accent-primary);
+  background: var(--accent-primary);
+}
+
+.mode-selector input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+}
+
+.mode-selector label:has(input:checked) {
+  border-color: var(--accent-primary);
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--accent-primary);
+}
+
+.convert-wrapper {
+  display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -132,6 +196,8 @@ header p {
   display: flex;
   align-items: center;
   gap: 1rem;
+  justify-content: center;
+  transition: opacity 0.3s ease;
 }
 
 .size-controls label {
@@ -168,6 +234,7 @@ button {
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: inherit;
+  width: 100%;
 }
 
 button:hover:not(:disabled) {
@@ -376,13 +443,17 @@ footer p {
     padding: 1.5rem;
   }
   
-  .options {
+  .mode-selector {
     flex-direction: column;
-    align-items: stretch;
+  }
+  
+  .mode-selector label {
+    width: 100%;
   }
   
   .size-controls {
     justify-content: center;
+    flex-wrap: wrap;
   }
   
   .download-links {
