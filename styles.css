@@ -184,6 +184,151 @@ header p {
   color: var(--accent-primary);
 }
 
+.preprocessing-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  border: 2px solid var(--border-secondary);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--bg-tertiary);
+  font-weight: 500;
+}
+
+.checkbox-label:hover {
+  border-color: var(--accent-primary);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.checkbox-label input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border-secondary);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+  border-color: var(--accent-primary);
+  background: var(--accent-primary);
+}
+
+.checkbox-label input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: translate(-50%, -60%) rotate(-45deg);
+}
+
+.checkbox-label:has(input:checked) {
+  border-color: var(--accent-primary);
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--accent-primary);
+}
+
+.slider-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.threshold-control,
+.thickness-control {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  border: 2px solid var(--border-secondary);
+  border-radius: 10px;
+  background: var(--bg-tertiary);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.threshold-control label,
+.thickness-control label {
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.thickness-hint {
+  font-size: 0.85em;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.threshold-control input[type="range"],
+.thickness-control input[type="range"] {
+  width: 150px;
+  height: 6px;
+  background: var(--border-secondary);
+  border-radius: 3px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.threshold-control input[type="range"]::-webkit-slider-thumb,
+.thickness-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.threshold-control input[type="range"]::-webkit-slider-thumb:hover,
+.thickness-control input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+
+.threshold-control input[type="range"]::-moz-range-thumb,
+.thickness-control input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.threshold-control input[type="range"]::-moz-range-thumb:hover,
+.thickness-control input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+
+.threshold-control span,
+.thickness-control span {
+  color: var(--accent-primary);
+  font-weight: 600;
+  min-width: 30px;
+  text-align: center;
+}
+
 .convert-wrapper {
   display: flex;
   align-items: center;
@@ -265,11 +410,25 @@ button:disabled {
   font-weight: 600;
 }
 
+.preview-label {
+  font-size: 0.9rem;
+  color: var(--accent-primary);
+  font-weight: 500;
+}
+
 .preview img {
   max-width: 200px;
   max-height: 200px;
   border-radius: 12px;
   border: 1px solid var(--border-secondary);
+  background: 
+    linear-gradient(45deg, #2a2a2a 25%, transparent 25%),
+    linear-gradient(-45deg, #2a2a2a 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #2a2a2a 75%),
+    linear-gradient(-45deg, transparent 75%, #2a2a2a 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  padding: 1rem;
 }
 
 .results {
@@ -293,6 +452,65 @@ button:disabled {
 
 .success-icon {
   color: var(--success);
+}
+
+.icon-preview {
+  margin-bottom: 2rem;
+}
+
+.icon-preview h4 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.icon-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  border: 1px solid var(--border-secondary);
+}
+
+.icon-preview-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-secondary);
+  transition: all 0.3s ease;
+}
+
+.icon-preview-item:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.icon-preview-item img {
+  background: 
+    linear-gradient(45deg, #2a2a2a 25%, transparent 25%),
+    linear-gradient(-45deg, #2a2a2a 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #2a2a2a 75%),
+    linear-gradient(-45deg, transparent 75%, #2a2a2a 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  border-radius: 4px;
+  padding: 0.5rem;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.icon-preview-item span {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
 .download-links {
@@ -451,6 +669,25 @@ footer p {
     width: 100%;
   }
   
+  .preprocessing-options {
+    width: 100%;
+  }
+  
+  .checkbox-label {
+    width: 100%;
+  }
+  
+  .slider-controls {
+    width: 100%;
+  }
+  
+  .threshold-control,
+  .thickness-control {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
   .size-controls {
     justify-content: center;
     flex-wrap: wrap;
@@ -458,6 +695,12 @@ footer p {
   
   .download-links {
     max-width: 100%;
+  }
+  
+  .icon-preview-grid {
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 0.5rem;
+    padding: 1rem;
   }
 }
 
