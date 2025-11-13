@@ -123,6 +123,25 @@
 						</label>
 					</div>
 
+					<div class="preprocessing-options">
+						<label class="checkbox-label">
+							<input type="checkbox" id="macosMenubar" name="macosMenubar" />
+							<span>Convert to macOS menubar icon (monochrome template)</span>
+						</label>
+						<div class="slider-controls hidden" id="sliderControls">
+							<div class="threshold-control">
+								<label for="threshold">Detail Level:</label>
+								<input type="range" id="threshold" name="threshold" min="0" max="255" value="127" />
+								<span id="thresholdValue">127</span>
+							</div>
+							<div class="thickness-control">
+								<label for="thickness">Line Thickness: <span class="thickness-hint">(− thin / + thick)</span></label>
+								<input type="range" id="thickness" name="thickness" min="-4" max="10" value="0" />
+								<span id="thicknessValue">0</span>
+							</div>
+						</div>
+					</div>
+
 					<div class="size-controls" id="sizeControls">
 						<label for="width">Width:</label>
 						<input
@@ -154,7 +173,7 @@
 				</form>
 
 				<div id="preview" class="preview hidden">
-					<h3>Preview</h3>
+					<h3>Preview <span id="previewLabel" class="preview-label hidden">(Monochrome Template)</span></h3>
 					<img id="previewImg" alt="Image preview" />
 				</div>
 
@@ -185,6 +204,12 @@
 						</svg>
 						Conversion Complete!
 					</h3>
+					
+					<div id="iconPreview" class="icon-preview">
+						<h4>Converted Icons:</h4>
+						<div id="iconPreviewGrid" class="icon-preview-grid"></div>
+					</div>
+					
 					<div class="download-links">
 						<a id="downloadPng" class="download-btn" target="_blank">
 							<svg
